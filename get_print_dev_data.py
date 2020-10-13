@@ -31,7 +31,7 @@ from svglib.svglib import svg2rlg
 '''
 
 project_id = "safecility-prod"
-topic_name = "device-info"
+topic_name = "device-ingestion"
 
 service_account_info = json.load(open("/Users/tadmcallister/CN8680/SafecilityApplication/cn8680_production_tools/Resources/safecility-prod-c3b25e87e515.json"))
 audience = "https://pubsub.googleapis.com/google.pubsub.v1.Subscriber"
@@ -56,7 +56,7 @@ label = Label()
 
 label.size = (89 * mm, 29 * mm)
 label.icon = '/Users/tadmcallister/ProductionTools/QR_Generator/Resources/safecility_icon.svg'
-label.ingest_api_url = 'https://app.safecility.com/api/device/register/'
+label.ingest_api_url = 'https://app.safecility.com/ingestion/'
 label.safecility_icon = '/Users/tadmcallister/ProductionTools/QR_Generator/Resources/safecility_icon.svg'
 
 
@@ -273,7 +273,7 @@ def generate_pdf(device_data, output_filename):
     ts = datetime.datetime.now().timestamp()
     qr_gen = generate_qr(label.ingest_api_url, device_data.imsi)  # generate qrcode
     c = canvas.Canvas(output_filename, pagesize=label.size)
-    renderPDF.draw(qr_gen, c, 170, 0)  # render qr encoded join url
+    renderPDF.draw(qr_gen, c, 165, -2)  # render qr encoded join url
 
     icon = svg2rlg(label.safecility_icon)
     scaling_factor = 0.16
@@ -295,7 +295,7 @@ def generate_pdf(device_data, output_filename):
     c.drawString(1 * mm, 10.5 * mm, (str("DFW: ") + str(device_data.dev_fwv)))
     c.drawString(1 * mm, 8.5 * mm, (str("MFW: ") + str(device_data.modem_fwv)))
     c.drawString(1 * mm, 6.5 * mm, (str("DT: ") + str(ts)))
-    c.drawString(1 * mm, 1 * mm, (str(label.ingest_api_url) + str(device_data.imsi)))
+    c.drawString(1 * mm, 0 * mm, (str(label.ingest_api_url) + str(device_data.imsi)))
 
     # Render page & save PDF
     c.showPage()
